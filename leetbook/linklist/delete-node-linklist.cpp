@@ -9,18 +9,34 @@ struct ListNode {
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
+// 迭代
 class Solution {
   public:
-    ListNode *removeNthFromEnd(ListNode *head, int n) {
-        ListNode *newHead = new ListNode(0, head);
-        ListNode *slow = newHead, *fast = head;
-        for (int i = 0; i < n; i++) {
-            fast = fast->next;
+    ListNode *removeElements(ListNode *head, int val) {
+        if(head == NULL){
+            return head;
         }
-        while (!fast) {
-            fast = fast->next;
-            slow = slow->next;
+        auto node = new ListNode(-1, head);
+        auto tmp = node;
+        while(tmp->next != NULL){
+            if(tmp->next->val == val){
+                tmp->next = tmp->next->next;
+            }else{
+                tmp = tmp->next;
+            } 
         }
-        return newHead->next;
+        return node->next;
+    }
+};
+
+// 递归
+class Solution {
+  public:
+    ListNode *removeElements(ListNode *head, int val) {
+        if(head == NULL){
+            return NULL;
+        }
+        head->next = removeElements(head->next, val);
+        return head->val == val ? head->next : head;
     }
 };
